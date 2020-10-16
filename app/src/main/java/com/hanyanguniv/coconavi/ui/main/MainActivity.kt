@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.hanyanguniv.coconavi.R
-import com.hanyanguniv.coconavi.ui.splash.SplashActivity
+import com.hanyanguniv.coconavi.ui.splash.view.SplashActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

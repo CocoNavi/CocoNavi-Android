@@ -1,12 +1,13 @@
-package com.hanyanguniv.coconavi.ui.splash
+package com.hanyanguniv.coconavi.ui.splash.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -20,6 +21,8 @@ import com.hanyanguniv.coconavi.R
 import com.hanyanguniv.coconavi.common.BaseActivity
 import com.hanyanguniv.coconavi.databinding.ActivitySplashBinding
 import com.hanyanguniv.coconavi.ui.main.MainActivity
+import com.hanyanguniv.coconavi.ui.splash.viewmodel.SplashViewModel
+import com.hanyanguniv.coconavi.utils.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -34,6 +37,7 @@ class SplashActivity : BaseActivity() {
     }
 
     private lateinit var binding: ActivitySplashBinding
+    private lateinit var viewModel: SplashViewModel
     private lateinit var auth: FirebaseAuth
 
 
@@ -50,12 +54,15 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash)
+        viewModel = ViewModelProvider(this).get(SplashViewModel::class.java)
         setProgressBar(binding.splashProgressbar)
 
         binding.apply {
             splashGoogleLogin.setOnClickListener {
                 val signInIntent = googleSignInClient.signInIntent
-                startActivityForResult(signInIntent, RC_SIGN_IN)
+                startActivityForResult(signInIntent,
+                    RC_SIGN_IN
+                )
             }
         }
 
@@ -97,7 +104,7 @@ class SplashActivity : BaseActivity() {
                 if (task.isSuccessful) {
                     // 로그인 성공
                     Log.d(TAG, "signInWithCredential:success")
-                    val user = auth.currentUser
+                    val user = auth.currentUser!!
                     updateUI(user)
                 } else {
                     Log.w(TAG, "signInWithCredential:success")
@@ -111,9 +118,30 @@ class SplashActivity : BaseActivity() {
         hideProgressBar()
 
         if (user != null) {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+            val userInfo = hashMapOf(
+                "username" to (user.email ?: "정보 없음"),
+                "nickname" to (user.displayName!! ?: "정보 없음"),
+                "uid" to user.uid,
+                "login_method" to "google"
+            )
+
+            viewModel.postUser(userInfo).observe(this, Observer {
+                it.let { resource ->
+                    when(resource.status) {
+                        Status.SUCCESS -> {
+                            val intent = Intent(this, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                        Status.LOADING -> showProgressBar()
+                        Status.ERROR -> {
+                            Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show()
+                            updateUI(null)
+                        }
+                    }
+                }
+            })
+
         } else {
             binding.splashGoogleLogin.visibility = View.VISIBLE
         }
