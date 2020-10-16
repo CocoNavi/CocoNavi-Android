@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "690718325544",
+    "firebase_url": "https://coconavi.firebaseio.com",
+    "project_id": "coconavi",
+    "storage_bucket": "coconavi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:690718325544:android:3358c559792a417827ae1d",
+        "android_client_info": {
+          "package_name": "com.hanyanguniv.coconavi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "690718325544-edcvbgiu3d75nd6krg789to47iddmtf3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hanyanguniv.coconavi",
+            "certificate_hash": "38ce13791ea5f76abcffe03b5bb6bcf99abd65a4"
+          }
+        },
+        {
+          "client_id": "690718325544-bj0ou96tc8ckseillim6frdvn615ua9o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-lkq6C9DVzvxzE2bpzJUoFAfs4KRIvFk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "690718325544-9vedb5qfp2dh20ujarqfa6g0u7jvllro.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "690718325544-2g035oll5h9fh1prhpmgv6pdicbeof7p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hanyanguniv.CocoNavi"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
